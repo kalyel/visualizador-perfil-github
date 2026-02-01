@@ -1,43 +1,33 @@
+import { fetchGitHubUser } from './modules/githubApi.js';
+import { renderProfile, renderLoading, clearProfile } from './modules/profileView.js';
+
 const inputSearch = document.getElementById('input-search');
 const btnSearch = document.getElementById('btn-search');
 const profileResults = document.querySelector('.profile-results');
 
-const baseUrl = 'https://api.github.com';
-
 btnSearch.addEventListener('click', async () => {
-  const userName = inputSearch.value;
+    const userName = inputSearch.value.trim();
+    if (!userName) {
+        alert('Por favor, digite um nome de usuário do GitHub.');
+        clearProfile(profileResults);
+        return;
+    }
 
-  if (userName) {
-    profileResults.innerHTML = `<p class="loading">Carregando...</p>`;
+    renderLoading(profileResults);
     
     try {
-        const response = await fetch(`${baseUrl}/users/${userName}`);
-        
-        if (!response.ok) {
+        const userData = await fetchGitHubUser(userName);
+        if (!userData) {
             alert('Usuário não encontrado. Por favor, verifique o nome de usuário e tente novamente.');
-            profileResults.innerHTML = "";
+            clearProfile(profileResults);
             return;
         }
 
-        const userData = await response.json();
-
-        profileResults.innerHTML = `
-        <div class="profile-card">
-            <img src="${userData.avatar_url}" alt="Avatar de ${userData.name}" class="profile-avatar">
-            <div class="profile-info">
-                <h2>${userData.name}</h2>
-                <p>${userData.bio || 'Não possui bio cadastrada 😢.'}</p>
-            </div>
-        </div>`;
+        renderProfile(userData, profileResults);
 
     } catch (error) {
         console.error('Erro ao buscar o perfil do usuário:', error);
         alert('Ocorreu um erro ao buscar o perfil do usuário. Por favor, tente novamente mais tarde.');
-        profileResults.innerHTML = "";
+        clearProfile(profileResults);
     }
-
-  } else {
-    alert('Por favor, digite um nome de usuário do GitHub.');
-    profileResults.innerHTML = "";
-  }
 });
