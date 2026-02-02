@@ -4,7 +4,7 @@
 
 ## Acesse o Projeto Online
 
-[Clique aqui para acessar o Visualizador de Perfil do GitHub no GitHub Pages](https://seu-usuario.github.io/visualizador-perfil-github/)
+[Clique aqui para acessar o Visualizador de Perfil do GitHub no GitHub Pages](https://kalyel.github.io/visualizador-perfil-github/)
 
 
 ## Descrição
