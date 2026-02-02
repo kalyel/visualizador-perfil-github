@@ -18,8 +18,6 @@ btnSearch.addEventListener('click', async () => {
     try {
         const userData = await fetchGitHubUser(userName);
         const userRepos = await fetchGitHubUserRepos(userName);
-        console.log(userRepos);
-        
         
         if (!userData) {
             alert('Usuário não encontrado. Por favor, verifique o nome de usuário e tente novamente.');
